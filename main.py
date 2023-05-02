@@ -15,6 +15,7 @@ have to be done separately, via partially manual treebanking.
 import sys
 from baseline1 import baseline1
 from baseline2 import baseline2
+from maxent_supertagger import maxent_supertagger
 
 # Main function
 if __name__ == '__main__':
@@ -23,10 +24,11 @@ if __name__ == '__main__':
     ace_exec = sys.argv[3]
     output_path = sys.argv[4]
     # Run baseline 1
-    baseline1_results = baseline1.run(profiles, grammar, ace_exec, output_path)
+    #baseline1_results = baseline1.run(profiles, grammar, ace_exec, output_path)
     # Run baseline 2
-    baseline2_results = baseline2.run(profiles, grammar, ace_exec, output_path)
+    #baseline2_results = baseline2.run(profiles, grammar, ace_exec, output_path)
     # Run experiments:
     # 1. Maxent
+    maxent_results = maxent_supertagger.run(profiles, grammar, ace_exec, output_path)
 
 
