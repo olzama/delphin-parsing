@@ -16,7 +16,10 @@ from baseline1 import baseline1
 
 # Main function
 if __name__ == '__main__':
-    sentence_set = ['The cat sat on the mat.', 'The dog sat on the mat.', 'The cat sat on the dog.']
+    profiles = sys.argv[1]
+    grammar = sys.argv[2]
+    ace_exec = sys.argv[3]
+    output_path = sys.argv[4]
     # Run baseline 1
-    baseline1_results = baseline1.run(sentence_set)
+    baseline1_results = baseline1.run(profiles, grammar, ace_exec, output_path)
     pass
