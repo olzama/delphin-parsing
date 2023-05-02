@@ -12,7 +12,9 @@ In addition to the parsing speed, accuracy will need to be measured (whether the
 have to be done separately, via partially manual treebanking.
 '''
 
+import sys
 from baseline1 import baseline1
+from baseline2 import baseline2
 
 # Main function
 if __name__ == '__main__':
@@ -22,4 +24,5 @@ if __name__ == '__main__':
     output_path = sys.argv[4]
     # Run baseline 1
     baseline1_results = baseline1.run(profiles, grammar, ace_exec, output_path)
-    pass
+    # Run baseline 2
+    baseline2_results = baseline2.run(profiles, grammar, ace_exec, output_path)
