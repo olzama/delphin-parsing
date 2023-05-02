@@ -13,7 +13,7 @@ import glob
 class baseline1:
 
     def run(path, grammar, ace_exec, output_path):
-        print('Running baseline 1...')
+        print('Running baseline 1 (no supertagging)...')
         for i, tsuite in enumerate(sorted(glob.iglob(path + '/**'))):
             ts = itsdb.TestSuite(tsuite)
             items = list(ts.processed_items())
