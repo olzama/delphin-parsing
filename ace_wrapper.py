@@ -13,7 +13,7 @@ The grammar should have been compiled with the exact same version of ACE as the 
 The cmdargs is a list of command-line arguments to pass to the ACE parser. The list can be empty.
 See https://github.com/delph-in/docs/wiki/AceOptions 
 '''
-def run_ace(profile_path, grammar, ace_exec, cmdargs, output_path):
+def run_ace(profile_path, grammar, ace_exec, cmdargs, ace_input_type, output_path):
     for i, tsuite in enumerate(sorted(glob.iglob(profile_path + '/**'))):
         ts = itsdb.TestSuite(tsuite)
         items = list(ts.processed_items())
@@ -23,7 +23,7 @@ def run_ace(profile_path, grammar, ace_exec, cmdargs, output_path):
             with ace.ACEParser(grammar, cmdargs=cmdargs, executable=ace_exec, stderr=errf) as parser:
                 for response in items:
                     # Reparse each sentence, to measure the parser speed without supertagging
-                    response = parser.interact(response['i-input'])
+                    response = parser.interact(response[ace_input_type])
                     if len(response['results']) == 0:
                         no_result.append(response['input'])
                     else:

@@ -12,5 +12,5 @@ class baseline2:
 
     def run(profiles_path, grammar, ace_exec, output_path):
         print('Running baseline 2 (--ubertagging=0.001)...')
-        run_ace(profiles_path, grammar, ace_exec, ['--ubertagging=0.001'], output_path)
+        run_ace(profiles_path, grammar, ace_exec, ['--ubertagging=0.001'], 'i-input', output_path)
 
