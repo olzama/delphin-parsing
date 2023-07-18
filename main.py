@@ -13,9 +13,10 @@ have to be done separately, via partially manual treebanking.
 '''
 
 import sys
-from baseline1 import baseline1
-from baseline2 import baseline2
-from maxent_supertagger import maxent_supertagger
+import baseline1
+import baseline2
+import maxent_supertagger
+import bert_supertagger
 
 # Main function
 if __name__ == '__main__':
@@ -29,6 +30,9 @@ if __name__ == '__main__':
     #baseline2_results = baseline2.run(profiles, grammar, ace_exec, output_path)
     # Run experiments:
     # 1. Maxent
-    maxent_results = maxent_supertagger.run(profiles, grammar, ace_exec, output_path)
-
+    # maxent_results = maxent_supertagger.run(profiles, grammar, ace_exec, output_path)
+    # 2. NCRF++
+    # 3. BERT
+    supertags_path = "/media/olga/lapka/BERT/erg/output/pestpredictions.txt"
+    bert_results = bert_supertagger.run(profiles, supertags_path, grammar, ace_exec, output_path)
 
