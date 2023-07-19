@@ -16,7 +16,8 @@ See https://github.com/delph-in/docs/wiki/AceOptions
 '''
 def run_ace(tsuite, grammar, ace_exec, cmdargs, ace_input_type, output_path):
     ts = itsdb.TestSuite(tsuite)
-    items = list(ts.processed_items())
+    #items = list(ts.processed_items())
+    items = list(ts['item'])
     responses = []
     no_result = []
     with open(output_path + '/ace_err.txt', 'w') as errf:

@@ -13,7 +13,7 @@ def run(profiles_path, supertags_path, grammar, ace_exec, output_path):
     print('Running experiment with BERT supertags...')
     for i, tsuite in enumerate(sorted(glob.iglob(profiles_path + '/**'))):
         #supertags = find_supertags(tsuite, supertags_path)
-        supertags = "/media/olga/lapka/BERT/erg/output/pestpredictions.txt"
+        supertags = "/home/olga/delphin/tools/ACE/my-ace/debug-files/pestpredictions.txt"
         run_ace(tsuite, grammar, ace_exec, ['-z', supertags], 'i-input', output_path)
 
 def find_supertags(tsuite, supertags_path):

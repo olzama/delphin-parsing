@@ -25,7 +25,7 @@ if __name__ == '__main__':
     ace_exec = sys.argv[3]
     output_path = sys.argv[4]
     # Run baseline 1
-    #baseline1_results = baseline1.run(profiles, grammar, ace_exec, output_path)
+    baseline1_results = baseline1.run(profiles, grammar, ace_exec, output_path)
     # Run baseline 2
     #baseline2_results = baseline2.run(profiles, grammar, ace_exec, output_path)
     # Run experiments:
