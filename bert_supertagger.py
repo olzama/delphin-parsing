@@ -14,7 +14,10 @@ def run(profiles_path, supertags_path, grammar, ace_exec, output_path):
     for i, tsuite in enumerate(sorted(glob.iglob(profiles_path + '/**'))):
         #supertags = find_supertags(tsuite, supertags_path)
         supertags = "/home/olga/delphin/tools/ACE/my-ace/debug-files/pestpredictions.txt"
-        run_ace(tsuite, grammar, ace_exec, ['-z', supertags], 'i-input', output_path)
+        responses_tsuite, coverage, avg_time = run_ace(tsuite, grammar, ace_exec, ['-z', supertags], 'i-input', output_path)
+        print('Coverage for ' + tsuite + ': ' + str(coverage))
+        print('Average parsing time per sentence time for ' + tsuite + ': ' + str(avg_time))
+
 
 def find_supertags(tsuite, supertags_path):
     # the tsuite name is the portion after the last slash:
