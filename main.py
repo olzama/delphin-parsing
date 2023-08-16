@@ -33,6 +33,6 @@ if __name__ == '__main__':
     # maxent_results = maxent_supertagger.run(profiles, grammar, ace_exec, output_path)
     # 2. NCRF++
     # 3. BERT
-    supertags_path = "pest/"
+    supertags_path = "/home/olga/delphin/tools/ACE/my-ace/debug-files/pest/"
     bert_results = bert_supertagger.run(profiles, supertags_path, grammar, ace_exec, output_path)
 
