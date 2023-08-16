@@ -14,7 +14,7 @@ def run(profiles_path, grammar, ace_exec, output_path):
     print('Running baseline 1 (no supertagging)...')
     responses = []
     for i, tsuite in enumerate(sorted(glob.iglob(profiles_path + '/**'))):
-        responses_tsuite, coverage, avg_time = run_ace(tsuite, grammar, ace_exec, ['--timeout=5'], 'i-input', output_path)
+        responses_tsuite, coverage, avg_time = run_ace(tsuite, grammar, ace_exec, [], 'i-input', output_path)
         responses.extend(responses_tsuite)
         print('Coverage for ' + tsuite + ': ' + str(coverage))
         print('Average parsing time per sentence time for ' + tsuite + ': ' + str(avg_time))

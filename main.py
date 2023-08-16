@@ -25,7 +25,7 @@ if __name__ == '__main__':
     ace_exec = sys.argv[3]
     output_path = sys.argv[4]
     # Run baseline 1
-    baseline1_results = baseline1.run(profiles, grammar, ace_exec, output_path)
+    #baseline1_results = baseline1.run(profiles, grammar, ace_exec, output_path)
     # Run baseline 2
     #baseline2_results = baseline2.run(profiles, grammar, ace_exec, output_path)
     # Run experiments:
@@ -33,6 +33,6 @@ if __name__ == '__main__':
     # maxent_results = maxent_supertagger.run(profiles, grammar, ace_exec, output_path)
     # 2. NCRF++
     # 3. BERT
-    supertags_path = "/media/olga/lapka/BERT/erg/output/pestpredictions.txt"
+    supertags_path = "/home/olga/delphin/tools/ACE/my-ace/debug-files/pest/"
     bert_results = bert_supertagger.run(profiles, supertags_path, grammar, ace_exec, output_path)
 
