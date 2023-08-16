@@ -3,7 +3,7 @@
 '''
 This program is a pydelphin wrapper for the ACE parser.
 '''
-from delphin import ace, itsdb
+from delphin import ace, itsdb, commands
 import glob
 import time
 
@@ -46,3 +46,9 @@ def run_ace(tsuite, grammar, ace_exec, cmdargs, ace_input_type, output_path):
     #    for i, nrs in enumerate(no_result):
     #        f.write(nrs + ': ' + errors[i] + '\n')
     return responses, coverage, total_time/len(items)
+
+def run_ace_on_ts(tsuite, grammar, ace_exec, cmdargs, ace_input_type, output_path):
+    ts = itsdb.TestSuite(tsuite)
+    with open(output_path + '/ace_err.txt', 'w') as errf:
+        with ace.ACEParser(grammar, cmdargs=cmdargs, executable=ace_exec, stderr=errf) as parser:
+            ts.process(parser)
