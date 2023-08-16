@@ -3,7 +3,7 @@
 '''
 This program is a pydelphin wrapper for the ACE parser.
 '''
-from delphin import ace, itsdb, commands
+from delphin import ace, itsdb
 import glob
 import time
 

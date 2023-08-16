@@ -13,7 +13,7 @@ def run(profiles_path, supertags_path, grammar, ace_exec, output_path):
     print('Running experiment with BERT supertags...')
     for i, tsuite in enumerate(sorted(glob.iglob(profiles_path + '/**'))):
         #supertags = find_supertags(tsuite, supertags_path)
-        run_ace_on_ts(tsuite, grammar, ace_exec, ['-z', supertags_path], 'i-input', output_path)
+        run_ace_on_ts(tsuite, grammar, ace_exec, ['-1', '-z', supertags_path], 'i-input', output_path)
 
 def find_supertags(tsuite, supertags_path):
     # the tsuite name is the portion after the last slash:
