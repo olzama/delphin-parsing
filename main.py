@@ -32,7 +32,8 @@ if __name__ == '__main__':
     baseline1_results, time_per_sentence_baseline = baseline1.run(profiles, grammar, ace_exec, output_path)
     same_baseline, diffs_baseline = compare_results.compare_results(gold_mrs, baseline1_results)
     # Run baseline 2
-    #baseline2_results = baseline2.run(profiles, grammar, ace_exec, output_path)
+    baseline2_results, time_per_sentence_baseline2 = baseline2.run(profiles, grammar, ace_exec, output_path)
+    same_baseline2, diffs_baseline2 = compare_results.compare_results(gold_mrs, baseline2_results)
     # Run experiments:
     # 1. Maxent
     # maxent_results = maxent_supertagger.run(profiles, grammar, ace_exec, output_path)
@@ -41,10 +42,15 @@ if __name__ == '__main__':
     supertags_path = sys.argv[6]
     bert_results, time_per_sentence_bert = bert_supertagger.run(profiles, supertags_path, grammar, ace_exec, output_path)
     same_bert, diffs_bert = compare_results.compare_results(gold_mrs, bert_results)
-    print("Baseline: {} same, {} different, {}% exact match, {} seconds per sentence".format(len(same_baseline),
+    print("Baseline1: {} same, {} different, {}% exact match, {} seconds per sentence".format(len(same_baseline),
                                                                                              len(diffs_baseline),
                                                                                              len(same_baseline)/len(gold_mrs),
                                                                                              time_per_sentence_baseline))
+    print("Baseline2: {} same, {} different, {}% exact match, {} seconds per sentence".format(len(same_baseline2),
+                                                                                             len(diffs_baseline2),
+                                                                                             len(same_baseline2) / len(
+                                                                                                 gold_mrs),
+                                                                                             time_per_sentence_baseline2))
     print("BERT: {} same, {} different {}% exact match, {} seconds per sentence".format(len(same_bert), len(diffs_bert),
                                                                                         len(same_bert)/len(gold_mrs),
                                                                                         time_per_sentence_bert))
