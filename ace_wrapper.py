@@ -3,7 +3,8 @@
 '''
 This program is a pydelphin wrapper for the ACE parser.
 '''
-from delphin import ace, itsdb
+from delphin import ace, itsdb, mrs, dmrs
+from delphin.codecs import simplemrs
 import glob
 import time
 
@@ -52,3 +53,10 @@ def run_ace_on_ts(tsuite, grammar, ace_exec, cmdargs, ace_input_type, output_pat
     with open(output_path + '/ace_err.txt', 'w') as errf:
         with ace.ACEParser(grammar, cmdargs=cmdargs, executable=ace_exec, stderr=errf, full_forest=True) as parser:
             ts.process(parser)
+    dmrs_lst = []
+    id2mrs = {}
+    for i,res in enumerate(ts['result']):
+        id = ts['item'][i]['i-id']
+        dmrs_lst.append(dmrs.from_mrs(simplemrs.decode(res['mrs'])))
+        id2mrs[id] = simplemrs.decode(res['mrs'])
+    return id2mrs, len(ts['item'])
