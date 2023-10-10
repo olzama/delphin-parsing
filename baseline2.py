@@ -6,22 +6,19 @@ This baseline is the time needed to parse a set of sentences using the ACE parse
 (based on Dridan 2008, 2009, and 2013).
 '''
 
-import glob
 from ace_wrapper import run_ace_on_ts
 import time
+import compare_results
 
-def run(profiles_path, grammar, ace_exec, output_path):
+def run(tsuite, grammar, ace_exec, output_path, gold_mrs, profile_name):
     print('Running baseline 2 (--ubertagging=0.001)...')
     responses = []
-    for i, tsuite in enumerate(sorted(glob.iglob(profiles_path + '/**'))):
-        # Measure time it took to run the experiment:
-        start = time.time()
-        results, n = run_ace_on_ts(tsuite, grammar, ace_exec, ['-1','--ubertagging=0.001','--timeout=10'], 'i-input', output_path)
-        end = time.time()
-        t = (end - start)/n
-        #responses_tsuite, coverage, avg_time = run_ace(tsuite, grammar, ace_exec, ["-1"], 'i-input', output_path)
-        #responses.extend(responses_tsuite)
-        #print('Coverage for ' + tsuite + ': ' + str(coverage))
-        #print('Average parsing time per sentence time for ' + tsuite + ': ' + str(avg_time))
-        return results, t
+    # Measure time it took to run the experiment:
+    start = time.time()
+    results, n = run_ace_on_ts(tsuite, grammar, ace_exec, ['-1','--ubertagging=0.001'], 'i-input', output_path + '/baseline2/' + profile_name)
+    end = time.time()
+    t = (end - start)/n
+    compare_results.report_results(gold_mrs, results, output_path + '/baseline2/' + profile_name, t)
+
+
 

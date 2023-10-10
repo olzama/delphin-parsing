@@ -51,7 +51,7 @@ def run_ace(tsuite, grammar, ace_exec, cmdargs, ace_input_type, output_path):
 def run_ace_on_ts(tsuite, grammar, ace_exec, cmdargs, ace_input_type, output_path):
     ts = itsdb.TestSuite(tsuite)
     with open(output_path + '/ace_err.txt', 'w') as errf:
-        with ace.ACEParser(grammar, cmdargs=cmdargs, executable=ace_exec, stderr=errf, full_forest=True) as parser:
+        with ace.ACEParser(grammar, cmdargs=cmdargs, executable=ace_exec, stderr=errf) as parser:
             ts.process(parser)
     dmrs_lst = []
     id2mrs = {}

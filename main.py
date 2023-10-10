@@ -12,46 +12,59 @@ In addition to the parsing speed, accuracy will need to be measured (whether the
 have to be done separately, via partially manual treebanking.
 '''
 
-import sys
+import sys, os
 import baseline1
 import baseline2
 import maxent_supertagger
 import bert_supertagger
 import compare_results
 
+
+# Create directories under output_path/baseline1, output_path/baseline2, and output_path/bert, named same as gold_profile:
+def set_up_experiment(output_path, gold_path, gold_profile):
+    baseline1_profile = output_path + '/baseline1/'
+    baseline2_profile = output_path + '/baseline2/'
+    bert_profile = output_path + '/bert/'
+    # Create new directories unless they already exist:
+    if not os.path.exists(baseline1_profile):
+        os.makedirs(baseline1_profile)
+    if not os.path.exists(baseline2_profile):
+        os.makedirs(baseline2_profile)
+    if not os.path.exists(bert_profile):
+        os.makedirs(bert_profile)
+    # Copy the gold profile to the three new directories:
+    os.system('cp -r ' + gold_path + ' ' + baseline1_profile)
+    os.system('cp -r ' + gold_path + ' ' + baseline2_profile)
+    os.system('cp -r ' + gold_path + ' ' + bert_profile)
+    # uncompress any .gz files:
+    os.system('gunzip ' + baseline1_profile + gold_profile + '/*.gz')
+    os.system('gunzip ' + baseline2_profile + gold_profile + '/*.gz')
+    os.system('gunzip ' + bert_profile + gold_profile + '/*.gz')
+    return baseline1_profile+gold_profile, baseline2_profile+gold_profile, bert_profile+gold_profile
+
+
 # Main function
 if __name__ == '__main__':
-    profiles = sys.argv[1]
+    gold_profile = sys.argv[1]
+    gold_path = "/home/olga/delphin/erg/trunk/tsdb/gold/" + gold_profile
     grammar = sys.argv[2]
-    ace_exec = sys.argv[3]
+    ace_exec1 = sys.argv[3]
     output_path = sys.argv[4]
-    gold_profiles = sys.argv[5]
+    supertags_path = sys.argv[5] + '/' + gold_profile + '/'
+    ubertag_grammar = sys.argv[6]
+    ace_exec2 = sys.argv[7]
+    run_all = sys.argv[8]
+    baseline1_profile, baseline2_profile, bert_profile = set_up_experiment(output_path, gold_path, gold_profile)
     # Extract gold MRS:
-    gold_mrs = compare_results.load_gold_mrs(gold_profiles)
-    # Run baseline 1
-    baseline1_results, time_per_sentence_baseline = baseline1.run(profiles, grammar, ace_exec, output_path)
-    same_baseline, diffs_baseline = compare_results.compare_results(gold_mrs, baseline1_results)
+    gold_mrs = compare_results.load_gold_mrs(gold_path)
+    if all == 'all':
+        # Run baseline 1
+        baseline1.run(baseline1_profile, grammar, ace_exec1, output_path, gold_mrs, gold_profile)
     # Run baseline 2
-    baseline2_results, time_per_sentence_baseline2 = baseline2.run(profiles, grammar, ace_exec, output_path)
-    same_baseline2, diffs_baseline2 = compare_results.compare_results(gold_mrs, baseline2_results)
+    baseline2.run(baseline2_profile, ubertag_grammar, ace_exec2, output_path, gold_mrs, gold_profile)
     # Run experiments:
     # 1. Maxent
     # maxent_results = maxent_supertagger.run(profiles, grammar, ace_exec, output_path)
     # 2. NCRF++
     # 3. BERT
-    supertags_path = sys.argv[6]
-    bert_results, time_per_sentence_bert = bert_supertagger.run(profiles, supertags_path, grammar, ace_exec, output_path)
-    same_bert, diffs_bert = compare_results.compare_results(gold_mrs, bert_results)
-    print("Baseline1: {} same, {} different, {}% exact match, {} seconds per sentence".format(len(same_baseline),
-                                                                                             len(diffs_baseline),
-                                                                                             len(same_baseline)/len(gold_mrs),
-                                                                                             time_per_sentence_baseline))
-    print("Baseline2: {} same, {} different, {}% exact match, {} seconds per sentence".format(len(same_baseline2),
-                                                                                             len(diffs_baseline2),
-                                                                                             len(same_baseline2) / len(
-                                                                                                 gold_mrs),
-                                                                                             time_per_sentence_baseline2))
-    print("BERT: {} same, {} different {}% exact match, {} seconds per sentence".format(len(same_bert), len(diffs_bert),
-                                                                                        len(same_bert)/len(gold_mrs),
-                                                                                        time_per_sentence_bert))
-
+    bert_supertagger.run(bert_profile, supertags_path, grammar, ace_exec1, output_path, gold_mrs, gold_profile)
