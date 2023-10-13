@@ -57,11 +57,11 @@ if __name__ == '__main__':
     baseline1_profile, baseline2_profile, bert_profile = set_up_experiment(output_path, gold_path, gold_profile)
     # Extract gold MRS:
     gold_mrs = compare_results.load_gold_mrs(gold_path)
-    if all == 'all':
-        # Run baseline 1
-        baseline1.run(baseline1_profile, grammar, ace_exec1, output_path, gold_mrs, gold_profile)
-    # Run baseline 2
-    baseline2.run(baseline2_profile, ubertag_grammar, ace_exec2, output_path, gold_mrs, gold_profile)
+    # if run_all == 'all':
+    #     # Run baseline 1
+    #     baseline1.run(baseline1_profile, grammar, ace_exec1, output_path, gold_mrs, gold_profile)
+    # # Run baseline 2
+    # baseline2.run(baseline2_profile, ubertag_grammar, ace_exec2, output_path, gold_mrs, gold_profile)
     # Run experiments:
     # 1. Maxent
     # maxent_results = maxent_supertagger.run(profiles, grammar, ace_exec, output_path)

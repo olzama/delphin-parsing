@@ -15,48 +15,42 @@ The grammar should have been compiled with the exact same version of ACE as the 
 The cmdargs is a list of command-line arguments to pass to the ACE parser. The list can be empty.
 See https://github.com/delph-in/docs/wiki/AceOptions 
 '''
-def run_ace(tsuite, grammar, ace_exec, cmdargs, ace_input_type, output_path):
+def run_ace(tsuite, grammar, ace_exec, cmdargs, ace_input_type, output_path, id2gold_mrs):
     ts = itsdb.TestSuite(tsuite)
-    #items = list(ts.processed_items())
+    id2mrs = {}
     items = list(ts['item'])
     responses = []
     no_result = []
     with open(output_path + '/ace_err.txt', 'w') as errf:
         with ace.ACEParser(grammar, cmdargs=cmdargs, executable=ace_exec, stderr=errf) as parser:
-            total_time = 0
             for item in items:
                 print('Parsing ' + item['i-input'])
-                # Time the parser call:
-                start = time.time()
                 response = parser.interact(item[ace_input_type])
-                end = time.time()
-                t = end - start
-                print('*** Parse time: ' + str(t) + ' seconds. ***')
-                total_time += t
                 if len(response['results']) == 0:
                     no_result.append(item['i-input'])
                     print('*** No parse. ***')
                 else:
                     responses.append(response)
+                    id = item['i-id']
+                    id2mrs[id] = simplemrs.decode(response['results'][0]['mrs'])
+                    if id in id2gold_mrs:
+                        if not mrs.is_isomorphic(id2gold_mrs[id], id2mrs[id]):
+                            print('*** Different MRS ***')
+                        else:
+                            print('*** Same MRS ***')
+                    else:
+                        print('*** No gold MRS ***')
     coverage = len(responses)/len(items)
-    # with open(output_path + '/ace_err.txt', 'r') as errf:
-    #     errors = errf.readlines()
-    #     for ln in errors:
-    #         print(ln)
-    #with open(output_path + '/noresults.txt', 'w') as f:
-    #    for i, nrs in enumerate(no_result):
-    #        f.write(nrs + ': ' + errors[i] + '\n')
-    return responses, coverage, total_time/len(items)
+    print("Parsed {}/{} sentences".format(len(responses), len(items)))
+    return id2mrs, len(items), coverage
 
 def run_ace_on_ts(tsuite, grammar, ace_exec, cmdargs, ace_input_type, output_path):
     ts = itsdb.TestSuite(tsuite)
     with open(output_path + '/ace_err.txt', 'w') as errf:
         with ace.ACEParser(grammar, cmdargs=cmdargs, executable=ace_exec, stderr=errf) as parser:
             ts.process(parser)
-    dmrs_lst = []
     id2mrs = {}
     for i,res in enumerate(ts['result']):
         id = ts['item'][i]['i-id']
-        dmrs_lst.append(dmrs.from_mrs(simplemrs.decode(res['mrs'])))
         id2mrs[id] = simplemrs.decode(res['mrs'])
     return id2mrs, len(ts['item'])
