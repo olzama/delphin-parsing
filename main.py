@@ -32,6 +32,10 @@ def set_up_experiment(output_path, gold_path, gold_profile):
         os.makedirs(baseline2_profile)
     if not os.path.exists(bert_profile):
         os.makedirs(bert_profile)
+    # Clear the directories:
+    os.system('rm -rf ' + baseline1_profile + gold_profile + '/*')
+    os.system('rm -rf ' + baseline2_profile + gold_profile + '/*')
+    os.system('rm -rf ' + bert_profile + gold_profile + '/*')
     # Copy the gold profile to the three new directories:
     os.system('cp -r ' + gold_path + ' ' + baseline1_profile)
     os.system('cp -r ' + gold_path + ' ' + baseline2_profile)
@@ -57,11 +61,11 @@ if __name__ == '__main__':
     baseline1_profile, baseline2_profile, bert_profile = set_up_experiment(output_path, gold_path, gold_profile)
     # Extract gold MRS:
     gold_mrs = compare_results.load_gold_mrs(gold_path)
-    # if run_all == 'all':
-    #     # Run baseline 1
-    #     baseline1.run(baseline1_profile, grammar, ace_exec1, output_path, gold_mrs, gold_profile)
-    # # Run baseline 2
-    # baseline2.run(baseline2_profile, ubertag_grammar, ace_exec2, output_path, gold_mrs, gold_profile)
+    if run_all == 'all':
+        # Run baseline 1
+        baseline1.run(baseline1_profile, grammar, ace_exec1, output_path, gold_mrs, gold_profile)
+    # Run baseline 2
+    baseline2.run(baseline2_profile, ubertag_grammar, ace_exec2, output_path, gold_mrs, gold_profile)
     # Run experiments:
     # 1. Maxent
     # maxent_results = maxent_supertagger.run(profiles, grammar, ace_exec, output_path)

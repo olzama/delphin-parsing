@@ -5,15 +5,17 @@ import glob
 def load_gold_mrs(tsuite):
     id2mrs = {}
     ts = itsdb.TestSuite(tsuite)
-    for i,res in enumerate(ts['result']):
-        id = ts['item'][i]['i-id']
-        id2mrs[id] = simplemrs.decode(res['mrs'])
+    for i,response in enumerate(ts.processed_items()):
+        if len(response['results']) > 0:
+            res = response.result(0)
+            id2mrs[response['i-id']] = simplemrs.decode(res['mrs'])
     return id2mrs
 
 def compare_results(gold, experimental):
     same = []
     not_same = []
     new = []
+    dmrs_to_compare = []
     in_both = set(gold.keys()).intersection(set(experimental.keys()))
     only_in_gold = set(gold.keys()).difference(set(experimental.keys()))
     only_in_experimental = set(experimental.keys()).difference(set(gold.keys()))
@@ -31,7 +33,12 @@ def compare_results(gold, experimental):
 def report_results(gold_mrs, results, output_path, t):
     same, diffs, new = compare_results(gold_mrs, results)
     gold_dmrs = [dmrs.from_mrs(gm) for gm in gold_mrs.values()]
-    results_dmrs = [dmrs.from_mrs(r) for r in results.values()]
+    results_dmrs = []
+    for id in gold_mrs:
+        if id not in results:
+            results_dmrs.append(None)
+        else:
+            results_dmrs.append(dmrs.from_mrs(results[id]))
     edm_p, edm_r, edm_f = edm.compute(gold_dmrs, results_dmrs)
     results_str = "{} same, {} different, {}% exact match, {} sec/sen".format(len(same), len(diffs),
                                                                             len(same) / len(gold_mrs), t)

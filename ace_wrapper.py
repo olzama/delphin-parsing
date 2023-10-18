@@ -50,7 +50,9 @@ def run_ace_on_ts(tsuite, grammar, ace_exec, cmdargs, ace_input_type, output_pat
         with ace.ACEParser(grammar, cmdargs=cmdargs, executable=ace_exec, stderr=errf) as parser:
             ts.process(parser)
     id2mrs = {}
-    for i,res in enumerate(ts['result']):
-        id = ts['item'][i]['i-id']
-        id2mrs[id] = simplemrs.decode(res['mrs'])
+    for i,response in enumerate(ts.processed_items()):
+        if len(response['results']) > 0:
+            res = response.result(0)
+            id2mrs[response['i-id']] = simplemrs.decode(res['mrs'])
+    print("Parsed {}/{} sentences".format(len(id2mrs), len(ts['item'])))
     return id2mrs, len(ts['item'])
