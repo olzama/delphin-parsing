@@ -16,7 +16,7 @@ def run(tsuite, supertags_path, grammar, ace_exec, output_path, gold_mrs, profil
     print('Testsuite: ' + tsuite + '...')
     # Measure time it took to run the experiment:
     start = time.time()
-    results, n = run_ace_on_ts(tsuite, grammar, ace_exec, ['-1', '--max-chart-megabytes=24000', '-z', supertags_path], 'i-input', output_path + '/bert/' + profile_name)
+    results, n = run_ace_on_ts(tsuite, grammar, ace_exec, ['-1', '--max-chart-megabytes=24000', '--timeout=120', '-z', supertags_path], 'i-input', output_path + '/bert/' + profile_name)
     #results, n, coverage = run_ace(tsuite, grammar, ace_exec, ['-1', '-z', supertags_path], 'i-input', output_path + '/bert/' + profile_name, gold_mrs)
     end = time.time()
     t = (end - start)/n

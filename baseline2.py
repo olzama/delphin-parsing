@@ -15,7 +15,7 @@ def run(tsuite, grammar, ace_exec, output_path, gold_mrs, profile_name):
     responses = []
     # Measure time it took to run the experiment:
     start = time.time()
-    results, n = run_ace_on_ts(tsuite, grammar, ace_exec, ['-1','--ubertagging=0.001', '--max-chart-megabytes=24000'],
+    results, n = run_ace_on_ts(tsuite, grammar, ace_exec, ['-1','--ubertagging=0.001', '--max-chart-megabytes=24000','--timeout=120'],
                                'i-input', output_path + '/baseline2/' + profile_name)
     #results, n, coverage = run_ace(tsuite, grammar, ace_exec, ['-1', '--ubertagging=0.001'], 'i-input',
     #                           output_path + '/baseline2/' + profile_name, gold_mrs)

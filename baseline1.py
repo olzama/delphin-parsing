@@ -14,8 +14,8 @@ def run(tsuite, grammar, ace_exec, output_path, gold_mrs, profile_name):
     print('Running baseline 1 (no supertagging)...')
     # Measure time it took to run the experiment:
     start = time.time()
-    results, n = run_ace_on_ts(tsuite, grammar, ace_exec, ['-1', '--max-chart-megabytes=24000'], 'i-input', output_path + '/baseline1/' + profile_name)
-    #results, n, coverage = run_ace(tsuite, grammar, ace_exec, ['-1'], 'i-input', output_path + '/baseline1/' + profile_name, gold_mrs)
+    results, n = run_ace_on_ts(tsuite, grammar, ace_exec, ['-1', '--max-chart-megabytes=24000', '--timeout=120'], 'i-input', output_path + '/baseline1/' + profile_name)
+    #results, n, coverage = run_ace(tsuite, grammar, ace_exec, ['-1', '--max-chart-megabytes=24000', '--timeout=5'], 'i-input', output_path + '/baseline1/' + profile_name, gold_mrs)
     end = time.time()
     t = (end - start)/n
     #print('Coverage: ' + str(coverage))
